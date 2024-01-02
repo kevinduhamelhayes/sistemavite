@@ -1,5 +1,5 @@
 
-import { Link } from 'react-router-dom'; // Asegúrate de haber instalado react-router-dom
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -8,8 +8,8 @@ const Navbar = () => {
         <h1 className="text-xl font-bold">Mi Aplicación</h1>
         <div>
           <Link to="/" className="px-3 py-2 rounded hover:bg-gray-700">Inicio</Link>
-          <Link to="/about" className="px-3 py-2 rounded hover:bg-gray-700">Acerca de</Link>
-          <Link to="/contact" className="px-3 py-2 rounded hover:bg-gray-700">Contacto</Link>
+          <Link to="/IngresaProductos" className="px-3 py-2 rounded hover:bg-gray-700">Acerca de</Link>
+          <Link to="/TodosLosProductos " className="px-3 py-2 rounded hover:bg-gray-700">Contacto</Link>
         </div>
       </div>
     </nav>
