@@ -1,3 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 4px; 
+}
+::-webkit-scrollbar-track {
+  background: #0B132B;
+}
+::-webkit-scrollbar-thumb {
+background: #5BC0BE; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6FFFE9;
+}
+
+.gear-reverse {
+	animation: spin-reverse 20s linear infinite 1.45s;
+}
+:root{
+  font-family: 'Red Hat Display', sans-serif;
+}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+}
+
+@keyframes spin-reverse {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-360deg);
+	}
+}
+
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+.gradient-animated {
+  background-size: 200% 200%;
+  animation: gradientAnimation 3s linear infinite;
+}
+
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradientAnimation 3s linear infinite;
+}
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Red+Hat+Display:wght@400;500&display=swap');
+
+#cover {
+  display: flex;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
