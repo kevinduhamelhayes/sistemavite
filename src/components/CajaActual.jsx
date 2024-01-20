@@ -47,7 +47,7 @@ const CajaActual = () => {
                             <option value="Tarjeta">Tarjeta</option>
                             {/* Otras opciones de pago */}
                         </select>
-                        <button className="p-3 w-full bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-300">
+                        <button className="p-3 w-full bg-green-500 hover:bg-green-700 text-white rounded-lg transition duration-300">
                             Cerrar Venta
                         </button>
                     </div>
