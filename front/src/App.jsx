@@ -1,6 +1,6 @@
 
 import { Routes, Route } from 'react-router-dom';
-import Layout from "./components/Layout";
+import Layout from "./components/Layout.jsx";
 import Usuarios from './components/Usuarios.jsx';
 import CajaActual from './components/CajaActual.jsx'
 import TodasLasCajas from './components/TodasLasCajas.jsx'
