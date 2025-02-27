@@ -4,9 +4,9 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import sequelize from './src/config/database.js';
 
-// Import routes (to be created)
-// import authRoutes from './src/routes/auth.js';
-// import userRoutes from './src/routes/users.js';
+// Import routes
+import authRoutes from './src/routes/auth.js';
+import userRoutes from './src/routes/users.js';
 // import categoryRoutes from './src/routes/categories.js';
 // import productRoutes from './src/routes/products.js';
 // import saleRoutes from './src/routes/sales.js';
@@ -22,9 +22,9 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
-// Routes (to be implemented)
-// app.use('/api/auth', authRoutes);
-// app.use('/api/users', userRoutes);
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 // app.use('/api/categories', categoryRoutes);
 // app.use('/api/products', productRoutes);
 // app.use('/api/sales', saleRoutes);
