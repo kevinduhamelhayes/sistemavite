@@ -1,25 +1,50 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
+import MainLayout from './layouts/MainLayout';
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './pages/Login';
 
-import { Routes, Route } from 'react-router-dom';
-import Layout from "./components/Layout.jsx";
-import Usuarios from './components/Usuarios.jsx';
-import CajaActual from './components/CajaActual.jsx'
-import TodasLasCajas from './components/TodasLasCajas.jsx'
-import Productos from './components/Productos.jsx'
-import AddProduct from './components/AddProduct.jsx'
+// Lazy load pages
+const Dashboard = () => import('./pages/Dashboard');
+const Products = () => import('./pages/Products');
+const Sales = () => import('./pages/Sales');
+const Reports = () => import('./pages/Reports');
+const Users = () => import('./pages/Users');
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/usuarios" element={<Usuarios />} />
-        <Route path="/caja-actual" element={<CajaActual/>} />
-        <Route path="/todas-las-cajas" element={<TodasLasCajas/>} />
-        <Route path="/productos" element={< Productos/>} />
-        <Route path="/ingresar-producto" element={< AddProduct/>} />
-        {/* Aquí puedes agregar más rutas para otros componentes */}
-        <Route path="/" element={<h1 className='text-red-500'>Página Principal</h1>} />
-      </Routes>
-    </Layout>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="products" element={<Products />} />
+            <Route path="sales" element={<Sales />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="users" element={<Users />} />
+          </Route>
+        </Routes>
+      </Router>
+      <Toaster position="top-right" />
+    </QueryClientProvider>
   );
 }
 
