@@ -1,11 +1,11 @@
 import express from 'express';
 import { Product, Category } from '../models/index.js';
-import { authenticate } from '../middleware/auth.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Get all products with their categories
-router.get('/', authenticate, async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   try {
     const products = await Product.findAll({
       include: [{ model: Category, as: 'category' }]
@@ -17,7 +17,7 @@ router.get('/', authenticate, async (req, res) => {
 });
 
 // Get a single product
-router.get('/:id', authenticate, async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id, {
       include: [{ model: Category, as: 'category' }]
@@ -32,7 +32,7 @@ router.get('/:id', authenticate, async (req, res) => {
 });
 
 // Create a new product
-router.post('/', authenticate, async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
     const product = await Product.create(req.body);
     res.status(201).json(product);
@@ -42,7 +42,7 @@ router.post('/', authenticate, async (req, res) => {
 });
 
 // Update a product
-router.put('/:id', authenticate, async (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
@@ -56,7 +56,7 @@ router.put('/:id', authenticate, async (req, res) => {
 });
 
 // Delete a product
-router.delete('/:id', authenticate, async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id);
     if (!product) {

@@ -1,44 +1,54 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
+import { LockClosedIcon } from '@heroicons/react/24/solid';
 
-function Login() {
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const { login } = useAuth();
+
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
+
     try {
-      const response = await fetch('http://localhost:3001/api/auth/login', {
+      console.log('Intentando login con:', { email, password });
+      const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ email, password }),
+        credentials: 'include'
       });
 
-      const data = await response.json();
-
+      console.log('Respuesta del servidor:', response.status);
+      
       if (!response.ok) {
-        throw new Error(data.message || 'Error al iniciar sesión');
+        const errorData = await response.json().catch(() => ({
+          message: 'Error al procesar la respuesta del servidor'
+        }));
+        throw new Error(errorData.message || `Error ${response.status}: ${response.statusText}`);
       }
 
-      localStorage.setItem('token', data.token);
-      toast.success('Inicio de sesión exitoso');
+      const data = await response.json();
+      console.log('Login exitoso:', data);
+      
+      login(data.token, data.user);
       navigate('/dashboard');
     } catch (error) {
-      toast.error(error.message);
+      console.error('Error en login:', error);
+      setError(error.message || 'Error al iniciar sesión');
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   return (
@@ -60,10 +70,10 @@ function Login() {
                 name="email"
                 type="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -75,26 +85,42 @@ function Login() {
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Contraseña"
-                value={formData.password}
-                onChange={handleChange}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
 
+          {error && (
+            <div className="rounded-md bg-red-50 p-4">
+              <div className="flex">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">{error}</h3>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={loading}
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                loading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
-              Iniciar Sesión
+              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
+              </span>
+              {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
           </div>
         </form>
       </div>
     </div>
   );
-}
+};
 
 export default Login; 

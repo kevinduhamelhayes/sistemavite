@@ -1,11 +1,11 @@
 import express from 'express';
 import { Category } from '../models/index.js';
-import { authenticate } from '../middleware/auth.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // Get all categories
-router.get('/', authenticate, async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   try {
     const categories = await Category.findAll();
     res.json(categories);
@@ -15,7 +15,7 @@ router.get('/', authenticate, async (req, res) => {
 });
 
 // Create a new category
-router.post('/', authenticate, async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
     const category = await Category.create(req.body);
     res.status(201).json(category);
@@ -25,7 +25,7 @@ router.post('/', authenticate, async (req, res) => {
 });
 
 // Update a category
-router.put('/:id', authenticate, async (req, res) => {
+router.put('/:id', authenticateToken, async (req, res) => {
   try {
     const category = await Category.findByPk(req.params.id);
     if (!category) {
@@ -39,7 +39,7 @@ router.put('/:id', authenticate, async (req, res) => {
 });
 
 // Delete a category
-router.delete('/:id', authenticate, async (req, res) => {
+router.delete('/:id', authenticateToken , async (req, res) => {
   try {
     const category = await Category.findByPk(req.params.id);
     if (!category) {

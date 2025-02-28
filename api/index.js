@@ -10,6 +10,7 @@ import userRoutes from './src/routes/users.js';
 import categoryRoutes from './src/routes/categories.js';
 import productRoutes from './src/routes/products.js';
 import saleRoutes from './src/routes/sales.js';
+import testRoutes from './src/routes/test.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
+app.use('/api/test', testRoutes);
 
 const PORT = process.env.PORT || 3001;
 

@@ -6,11 +6,11 @@ import {
   cancelSale,
   getDashboardStats,
 } from '../controllers/sales.js';
-import { authenticate, authorize } from '../middleware/auth.js';
+import { authenticateToken, authorize } from '../middleware/auth.js';
 
 const router = Router();
 
-router.use(authenticate);
+router.use(authenticateToken);
 
 router.get('/', getSales);
 router.get('/stats', getDashboardStats);

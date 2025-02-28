@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-export const authenticate = async (req, res, next) => {
+export const authenticateToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
